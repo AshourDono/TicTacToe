@@ -1,0 +1,97 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : Feb 06, 2022, 10:20:22 PM
+    Author     : ahmed
+*/
+
+#AnchorPane
+{
+    -fx-background-color: white;
+}
+#back{
+    -fx-background-color: violet;
+/*-fx-background-image:url(../image/leftArrow.png) ;*/
+}
+
+#BorderPane {
+  -fx-background-color: #fff;
+}
+
+#usernameTextField,
+#passwordTextField {
+  -fx-border-radius: 30em 30em 30em 30em;
+  -fx-background-color: #f3f3fa;
+  -fx-text-box-border: transparent;
+  -fx-border-width: 2px;
+}
+
+#loginButton,
+#signupButton,
+#singleModeButton,
+#multiModeButton,
+#logoutButton,
+#backButton {
+  -fx-background-color: #6f72fa;
+  -fx-background-radius: 35;
+}
+
+
+#VBox {
+  -fx-border-radius: 5px;
+  -fx-border-color: black;
+  -fx-border-width: 2px;
+}
+
+.root {
+     -fx-background-image: url("../image/img.jpg");
+     
+/*    -fx-background-size: cover;*/
+}
+.controlBtn , .label{
+   
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-font-family: "Arial Black";
+    -fx-text-fill: white;
+    -fx-effect: dropshadow( gaussian , rgba(255,255,255,0.5) , 0,0,0,1 );
+/*    -fx-font-size: 15px;
+   -fx-font-family: "Arial Black";
+   -fx-fill: #818181;
+   -fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );
+   */
+}
+.controlBtn{
+      
+ -fx-background-color: #26004B;
+
+}
+.gridBtn{
+   -fx-background-color:  #01054c;
+  /*-fx-background-color: radial-gradient(radius 365% , #7f53ac 0%, #647dee 74%);
+/*background-color: #7f53ac;
+background-image: linear-gradient(315deg, #7f53ac 0%, #647dee 74%);*/
+}
+.controlBtn:hover {
+    -fx-background-color:  #DF008B;
+    -fx-background-color: radial-gradient(radius 365%, #1CB5E0 0%, #000851 100%);
+ 
+}
+
+.bgGame{
+    -fx-background-image: url("../image/bg1.jpg");
+        -fx-background-size: cover;
+}
+
+.invite{
+    -fx-background-image: url("../image/DwItVP.png");
+    -fx-background-size: cover;
+}
+
+.imgview{
+    
+     -fx-background-color:  #e3bf09;
+}
+
