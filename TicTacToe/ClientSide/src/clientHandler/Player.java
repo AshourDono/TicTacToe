@@ -5,6 +5,7 @@
 package clientHandler;
 
 import java.util.regex.Pattern;
+import org.json.simple.JSONObject;
 
 /**
  *
@@ -110,5 +111,20 @@ public class Player {
 
         return check;
     }
+     public void updateStatus(String status){
+        JSONObject newstatus = new JSONObject();
+        newstatus.put("type", "updateStatus");
+        newstatus.put("status", status);
+        ClientHandler.sendRequest(newstatus);
+        this.status = status;
+    }
+    
+    public void updateScore(String newScore){
+        JSONObject newscore = new JSONObject();
+        newscore.put("type", "updateScore");
+        newscore.put("score", newScore);
+        ClientHandler.sendRequest(newscore);
+    }
 }
+
 

@@ -5,6 +5,7 @@
 package controllers;
 
 import actions.AppControl;
+import clientHandler.ClientHandler;
 import clientHandler.Player;
 import java.io.IOException;
 import java.net.URL;
@@ -15,6 +16,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import org.json.simple.JSONObject;
 
 /**
  *
@@ -63,8 +65,14 @@ public class SignUpController implements Initializable {
             warningLabel.setText("");
 
             player.setUsername(user);
-
+            
+            JSONObject signReq = new JSONObject();
+            signReq.put("type", "signup");
+            signReq.put("username", username);
+            signReq.put("password", password);
+            ClientHandler.sendRequest(signReq);
             AppControl.moveTo("Welcome");
+            
         }
     }
   @FXML

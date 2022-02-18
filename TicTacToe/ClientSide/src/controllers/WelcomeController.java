@@ -14,11 +14,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
-
-/**
- *
- * @author ahmed
- */
+import clientHandler.ClientHandler;
 public class WelcomeController implements Initializable {
 
     /**
@@ -40,7 +36,7 @@ public class WelcomeController implements Initializable {
 
         @Override
         public void initialize(URL url, ResourceBundle rb) {
-//        username.setText(ClientHandler.getPlayer().getUsername());
+        username.setText(ClientHandler.getPlayer().getUsername());
         }
     }
 

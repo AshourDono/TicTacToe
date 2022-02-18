@@ -16,6 +16,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import clientHandler.ClientHandler;
+import org.json.simple.JSONObject;
 
 /**
  *
@@ -39,14 +41,18 @@ public class LoginController implements Initializable {
     private PasswordField password;
 
     @FXML
-    private Label warningLabel;
+    private static Label warningLabel;
 
     Player player;
 
+    public static void setWarning(String warning)
+    {
+        warningLabel.setText(warning);
+    }
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         player = new Player();
-//        ClientHandler.setLoginCtrl(this); 
+       // ClientHandler.setLoginCtrl(this);
     }
 
     @FXML
@@ -72,14 +78,14 @@ public class LoginController implements Initializable {
             warningLabel.setText("");
 
             player.setUsername(user);
-//            ClientHandler.setPlayer(player);
-
+            ClientHandler.setPlayer(player);
+//
             //Generate a new login request to the server.
-//            JSONObject loginReq = new JSONObject();
-//            loginReq.put("type", "signin");
-//            loginReq.put("username", username);
-//            loginReq.put("password", password);
-//            ClientHandler.sendRequest(loginReq);
+            JSONObject loginReq = new JSONObject();
+            loginReq.put("type", "signin");
+            loginReq.put("username", username);
+            loginReq.put("password", password);
+            ClientHandler.sendRequest(loginReq);
             AppControl.moveTo("Welcome");
         }
 
