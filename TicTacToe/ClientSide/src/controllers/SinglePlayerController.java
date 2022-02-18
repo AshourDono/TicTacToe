@@ -5,6 +5,7 @@
 package controllers;
 
 import actions.AppControl;
+import clientHandler.ClientHandler;
 import clientHandler.GameHandler;
 import java.io.IOException;
 import java.net.URL;
@@ -354,8 +355,7 @@ public class SinglePlayerController implements Initializable {
     @Override
         public void initialize(URL url, ResourceBundle rb) {
         setSceneVisibility(false);
-//        player1.setText(ClientHandler.getPlayer().getUsername()); from db
-        player1.setText("player1");
+        player1.setText(ClientHandler.getPlayer().getUsername());
         player2.setText("Computer");
         
 //        mode = Game.getMode(); //should get mode from the previous scene

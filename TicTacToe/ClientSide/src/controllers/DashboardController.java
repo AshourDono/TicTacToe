@@ -8,15 +8,25 @@ import actions.AppControl;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.TableColumn;
+
 
 /**
  *
  * @author ahmed
  */
 public class DashboardController implements Initializable {
+    @FXML
+    private  TableColumn  playerList;
+    @FXML
+    private TableColumn scoreList;
+    @FXML
+    private TableColumn statusList;
+    
 
     // #============================================================================#
     // # handel Actions #
@@ -40,6 +50,11 @@ public class DashboardController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
+    }
+     public void updateTable(ObservableList<String> nameList , ObservableList<String> scoreList , ObservableList<String> statusList){
+//        playerList.setItems(nameList);
+//        scoreList.setItems(scoreList);
+//        statusList.setItems(statusList);
     }
 
 }
