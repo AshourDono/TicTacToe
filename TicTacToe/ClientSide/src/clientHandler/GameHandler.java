@@ -20,16 +20,16 @@ public class GameHandler {
     private final char playerO = 'O';
     private int winner;
     private static int mode;
-    private static BtnPosition moveOfNextPlayer;
+    private static btnPosition moveOfNextPlayer;
      
     //get position of cell
-    public static class BtnPosition{ 
+    public static class btnPosition{ 
         public int row = -1;
         public int col = -1;
         
-        public BtnPosition(){}
+        public btnPosition(){}
         
-        public BtnPosition(int row, int col){
+        public btnPosition(int row, int col){
             this.row = row;
             this.col = col;
         }
@@ -53,11 +53,11 @@ public class GameHandler {
     }
     
       //get Move Of Next Player
-    public static BtnPosition getMoveOfNextPlayer(){
+    public static btnPosition getMoveOfNextPlayer(){
         return GameHandler.moveOfNextPlayer;
     }
      //set Move Of Next Player
-    public static void setMoveOfNextPlayer(BtnPosition move){
+    public static void setMoveOfNextPlayer(btnPosition move){
         moveOfNextPlayer = move;
     }
     
@@ -195,7 +195,6 @@ public class GameHandler {
         boolean result = false;
         movesCount= 9 - getNumberOfMoves();
         if(movesCount == 9){
-//if(!checkMovesOnBoard()){
             result = true;
         }
         return result;
@@ -251,11 +250,11 @@ public class GameHandler {
     
     //return position of empty cells
     public ArrayList getAvailableMoves(){
-        ArrayList<BtnPosition> availableMoves = new ArrayList();
+        ArrayList<btnPosition> availableMoves = new ArrayList();
         for(int i = 0; i < 3; i++){
             for(int j = 0; j < 3; j++){
                 if(board[i][j] == ' '){
-                    BtnPosition c = new BtnPosition(i, j);
+                    btnPosition c = new btnPosition(i, j);
                     availableMoves.add(c);
                 }
             }
@@ -265,8 +264,8 @@ public class GameHandler {
     
     
       //get rand cell
-    public BtnPosition getRandomBtn(){
-        ArrayList<BtnPosition> availableMoves = getAvailableMoves();
+    public btnPosition getRandomBtn(){
+        ArrayList<btnPosition> availableMoves = getAvailableMoves();
         int length = availableMoves.size();
         Random random = new Random();
         int rand = random.nextInt(length);

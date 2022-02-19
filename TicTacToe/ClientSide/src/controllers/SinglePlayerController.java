@@ -4,7 +4,7 @@
  */
 package controllers;
 
-import actions.AppControl;
+import Actions.AppControl;
 import clientHandler.ClientHandler;
 import clientHandler.GameHandler;
 import java.io.IOException;
@@ -245,7 +245,7 @@ public class SinglePlayerController implements Initializable {
     @FXML
     private void computerPlay() throws IOException {
         if (!isFinish) {
-            GameHandler.BtnPosition resultBtn = null;
+            GameHandler.btnPosition resultBtn = null;
             resultBtn = game.getRandomBtn();
 
 
@@ -340,10 +340,7 @@ public class SinglePlayerController implements Initializable {
         AppControl.moveTo("Dashboard");
     }
 
-    @FXML
-    private void saveBtnHandler(ActionEvent event) throws IOException {
-
-    }
+   
 
     @FXML
     private void clearBtns() {

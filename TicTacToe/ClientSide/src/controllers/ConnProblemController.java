@@ -4,7 +4,7 @@
  */
 package controllers;
 
-import actions.AppControl;
+import Actions.AppControl;
 import clientHandler.ClientHandler;
 import java.io.IOException;
 import java.net.URL;
@@ -36,11 +36,12 @@ public class ConnProblemController implements Initializable {
 
             Thread readerThread = new Thread(new ClientHandler.recieveRespone());
             readerThread.start();
-        try {
-            AppControl.moveTo("Login");
-        } catch (IOException ex) {
-            Logger.getLogger(ConnProblemController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//        try {
+//            AppControl.moveTo("Login");
+//        } catch (IOException ex) {
+//            Logger.getLogger(ConnProblemController.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+           ClientHandler.changeScene("Login");
         }
     }
 
