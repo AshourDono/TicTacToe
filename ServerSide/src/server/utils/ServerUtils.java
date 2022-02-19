@@ -1,9 +1,6 @@
-/*
-    This is an abstract class that includes configuration variables
-    as well as helper functions for the server 
- */
 //#============================================================================#
-//#                 Abstract send / reterive data from database                #
+//#       This is an abstract class that includes configuration variables      #
+//#                      as well as helper functions for the server            #
 //#============================================================================#
 package server.utils;
 

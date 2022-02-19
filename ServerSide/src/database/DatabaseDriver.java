@@ -22,9 +22,6 @@ public class DatabaseDriver {
     private String queryStr;
     private ResultSet resultSet; // used for store data from database    
 
-//    public DatabaseDriver() {
-////        startConnection();
-//    }
 
     public void setConnection(Connection connection) {
         this.connection = connection;

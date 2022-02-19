@@ -1,9 +1,6 @@
-/*
-    This is an abstract class that includes all the error messages
-    available as static variables
- */
 //#============================================================================#
-//#                 Abstract send / reterive data from database                #
+//#        This is an abstract class that includes all the error messages      #
+//#                           available as static variables                    #
 //#============================================================================#
 package server.utils;
 
