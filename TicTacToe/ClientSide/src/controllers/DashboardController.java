@@ -4,7 +4,8 @@
  */
 package controllers;
 
-import actions.AppControl;
+import Actions.AppControl;
+import clientHandler.ClientHandler;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -12,6 +13,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 
 
@@ -21,11 +23,11 @@ import javafx.scene.control.TableColumn;
  */
 public class DashboardController implements Initializable {
     @FXML
-    private  TableColumn  playerList;
+    private  ListView <String>  playerList;
     @FXML
-    private TableColumn scoreList;
+    private ListView <String> scoreList;
     @FXML
-    private TableColumn statusList;
+    private ListView <String>  statusList;
     
 
     // #============================================================================#
@@ -49,12 +51,13 @@ public class DashboardController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
+        ClientHandler.setDashboardCtrl(this);
+        updateTable(ClientHandler.getNameList(),ClientHandler.getScoreList(),ClientHandler.getStatusList());
     }
-     public void updateTable(ObservableList<String> nameList , ObservableList<String> scoreList , ObservableList<String> statusList){
-//        playerList.setItems(nameList);
-//        scoreList.setItems(scoreList);
-//        statusList.setItems(statusList);
+     public void updateTable(ObservableList<String> nameList , ObservableList<String> score , ObservableList<String> status){
+        playerList.setItems(nameList);
+        scoreList.setItems(score);
+        statusList.setItems(status);
     }
 
 }

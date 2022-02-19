@@ -13,7 +13,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
-import actions.AppControl;
+import Actions.AppControl;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -81,8 +81,7 @@ public class InvitationController implements Initializable{
     }
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-        //ClientHandler.setInvitationCtrl(this);
+         ClientHandler.setInvitationCtrl(this);
         waitingSubscene.setVisible(false);
         startGameBtn.setDisable(true);
     } 

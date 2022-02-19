@@ -4,7 +4,7 @@
  */
 package controllers;
 
-import actions.AppControl;
+import Actions.AppControl;
 import clientHandler.Player;
 import java.io.IOException;
 import java.net.URL;
@@ -17,6 +17,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import clientHandler.ClientHandler;
+import javafx.scene.input.MouseEvent;
 import org.json.simple.JSONObject;
 
 /**
@@ -41,13 +42,14 @@ public class LoginController implements Initializable {
     private PasswordField password;
 
     @FXML
-    private static Label warningLabel;
+    private Label warningLabel;
 
     Player player;
 
-    public static void setWarning(String warning)
+  
+    public Label getWarning()
     {
-        warningLabel.setText(warning);
+        return warningLabel;
     }
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -63,7 +65,7 @@ public class LoginController implements Initializable {
     }
 
     @FXML
-    private void loginButtonClicked(ActionEvent event) throws IOException {
+    private void loginButtonClicked(MouseEvent event) throws IOException  {
         String user = username.getText();
         String pass = password.getText();
 
@@ -76,17 +78,15 @@ public class LoginController implements Initializable {
             warningLabel.setText("Invalid password format, should be between 6 and 20 characters");
         } else {
             warningLabel.setText("");
-
             player.setUsername(user);
             ClientHandler.setPlayer(player);
-//
             //Generate a new login request to the server.
             JSONObject loginReq = new JSONObject();
             loginReq.put("type", "signin");
-            loginReq.put("username", username);
-            loginReq.put("password", password);
+            loginReq.put("username", user);
+            loginReq.put("password", pass);
             ClientHandler.sendRequest(loginReq);
-            AppControl.moveTo("Welcome");
+           
         }
 
     }

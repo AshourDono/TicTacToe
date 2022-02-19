@@ -4,7 +4,7 @@
  */
 package controllers;
 
-import actions.AppControl;
+import Actions.AppControl;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;

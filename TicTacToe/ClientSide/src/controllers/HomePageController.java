@@ -4,7 +4,8 @@
  */
 package controllers;
 
-import actions.AppControl;
+import Actions.AppControl;
+import clientHandler.ClientHandler;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -12,12 +13,20 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
+import org.json.simple.JSONObject;
 
 /**
  *
  * @author ahmed
  */
 public class HomePageController implements Initializable {
+
+    @FXML
+    private Label userName;
+    @FXML
+    private Label userScore;
 
     /**
      * Initializes the controller class.
@@ -29,7 +38,10 @@ public class HomePageController implements Initializable {
 
     @FXML
     private void loadBtnClicked(ActionEvent event) throws IOException {
-//        AppControl.moveTo("Dashboard");
+        JSONObject getGamesRequest = new JSONObject();
+        getGamesRequest.put("type", "getGames");
+        ClientHandler.sendRequest(getGamesRequest);
+        AppControl.moveTo("LoadGame");
     }
 
     @FXML
@@ -37,10 +49,21 @@ public class HomePageController implements Initializable {
         Platform.exit();
     }
 
+    public void updateScore(String newScore) {
+        userScore.setText(newScore);
+    }
+
+    private void updateHandler(ActionEvent event) {
+        JSONObject updateReq = new JSONObject();
+        updateReq.put("type", "updateList");
+        ClientHandler.sendRequest(updateReq);
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+           ClientHandler.setNewgameCtrl(this);
+        userName.setText(ClientHandler.getPlayer().getUsername());
+        userScore.setText(String.valueOf(ClientHandler.getPlayer().getScore()) + " points");
     }
 
 }
-

@@ -17,7 +17,7 @@ import javafx.collections.ObservableList;
 import javafx.stage.Stage;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import actions.AppControl;
+import Actions.AppControl;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Platform;
@@ -29,8 +29,10 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import controllers.LoginController;
 import controllers.DashboardController;
-import controllers.MultipleController;
+import controllers.InviteController;
 import clientHandler.GameHandler;
+import controllers.InvitationController;
+import controllers.LoadGameController;
 
 /**
  *
@@ -44,14 +46,14 @@ public class ClientHandler {
     private static Player player;
     private static String currentScene;
     private static DataOutputStream ps;
-//    private static LoginController loginctrl;
-//    private static HomePageController startctrl;
-    private static DashboardController dashBoard;
-//    private static LoadgameFXMLController loadgamectrl;
-//    private static InviteFXMLController Invitectrl;
+    private static LoginController loginctrl;
+    private static HomePageController homePage;
+    private static DashboardController dashboard;
+    private static LoadGameController loadGame;
+    private static InviteController invite;
 //    private static PlayingModeFXMLController Playmodectrl;
-//    private static InvitationFXMLController invitationCtrl;
-    private static MultipleController multigame;
+    private static InvitationController invitation;
+    private static MultiplePlayerController multiGame;
     private static ObservableList<String> nameList = FXCollections.observableArrayList();
     private static ObservableList<String> statusList = FXCollections.observableArrayList();
     private static ObservableList<String> scoreList = FXCollections.observableArrayList();
@@ -67,6 +69,59 @@ public class ClientHandler {
     private static boolean clientDropped = false;
     private static boolean isConnected;
 
+      public static void setLoginCtrl(LoginController ctrl) {
+        loginctrl=ctrl;
+    }
+    public static void setDashboardCtrl(DashboardController ctrl) {
+        dashboard = ctrl;
+    }
+
+    public static void setNewgameCtrl(HomePageController ctrl) {
+        homePage = ctrl;
+    }
+
+    public static void setLoadgameCtrl(LoadGameController ctrl) {
+        loadGame = ctrl;
+    }
+
+    public static void setInviteCtrl(InviteController ctrl) {
+        invite = ctrl;
+    }
+//    public static void setPlaymodeCtrl(PlayingModeController ctrl){
+//       Playmodectrl=ctrl;
+//    }
+
+    public static void setInvitationCtrl(InvitationController ctrl) {
+        invitation = ctrl;
+    }
+
+    public static void setMultigameCtrl(MultiplePlayerController ctrl) {
+        multiGame = ctrl;
+    }
+ public static void setWindow(Stage stage) {
+        window = stage;
+    }
+    public static Stage getWindow() {
+        return window;
+    }
+     @FXML
+    public static void changeScene(String newScene)
+    {   
+        setCurrentScene(newScene);
+        Platform.runLater(() -> {   
+            try {
+                //err=> ClientHandler.class
+                Parent root = FXMLLoader.load(ClientHandler.class.getResource("./fxml"+newScene+".fxml"));
+                Scene scene = new Scene(root);
+                window.setScene(scene);
+                window.setResizable(false);
+                window.show();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        });
+    }
+    
     public static boolean connectToServer() {
         boolean result = true;
         try {
@@ -77,6 +132,7 @@ public class ClientHandler {
         } catch (IOException ex) {
             result = false;
         }
+        System.out.println(result);
         return result;
     }
 
@@ -92,6 +148,9 @@ public class ClientHandler {
 
     public static void sendRequest(JSONObject jsonMsg) {
         try {
+//            connectToServer();
+//            System.out.println(ps);
+   
             ps.writeUTF(jsonMsg.toJSONString());
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -115,6 +174,7 @@ public class ClientHandler {
                 } catch (IOException ex) {
                     running = false;
                     try {
+                        
                         AppControl.moveTo("ConnProblem");
                     } catch (IOException ex1) {
                         Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE, null, ex1);
@@ -141,9 +201,6 @@ public class ClientHandler {
                 case "updateList":
                     updateList(jsonMsg);
                     break;
-                case "invitePlayer":
-                    invitePlayerResponse(jsonMsg);
-                    break;
                 case "invitation":
                     invitationRequest(jsonMsg);
                     break;
@@ -168,17 +225,15 @@ public class ClientHandler {
                 case "invitationResponse":
                     getInvitationResponse(jsonMsg);
                     break;
-
                 case "saveGame":
                     saveGameResponse(jsonMsg);
                     break;
-
                 case "gameQuit":
                     gameQuitResponse(jsonMsg);
                     break;
-
             }
         } catch (ParseException ex) {
+            Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -241,9 +296,11 @@ public class ClientHandler {
     public static boolean getClientDropped() {
         return clientDropped;
     }
-     public static void setPlayer(Player p) {
+
+    public static void setPlayer(Player p) {
         player = p;
     }
+
     public static Player getPlayer() {
         return player;
     }
@@ -263,11 +320,18 @@ public class ClientHandler {
         String request = response.get("type").toString();
         String resStatus = response.get("responseStatus").toString();
         if (resStatus.equals("true")) {
-            getData(response);
+//            getData(response);
+        player.setScore(Integer.parseInt(response.get("score").toString()));
+        player.setUsername(response.get("username").toString());
+        player.setStatus(response.get("status").toString());
+            try {
+                AppControl.moveTo("Welcome");
+            } catch (IOException ex) {
+                Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE, null, ex);
+            }
         } else {
             String error = response.get("errorMsg").toString();
             String warning;
-
             if (request.equals("signin") && error.equals("signedin")) {
                 warning = ("You are already signed in.");
             } else if (request.equals("signin") && error.equals("fail")) {
@@ -275,9 +339,8 @@ public class ClientHandler {
             } else {
                 warning = "unexpected";
             }
-            Platform.runLater(() -> {
-                LoginController.setWarning(warning);
-            });
+             Platform.runLater(() -> {loginctrl.getWarning().setText(warning);});
+            
         }
     }
 
@@ -289,15 +352,12 @@ public class ClientHandler {
         } else {
             String error = response.get("errorMsg").toString();
             String warning;
-
             if (request.equals("signup") && error.equals("fail")) {
                 warning = "Username already exists.";
             } else {
                 warning = "unexpected";
             }
-            Platform.runLater(() -> {
-                LoginController.setWarning(warning);
-            });
+           Platform.runLater(() -> {loginctrl.getWarning().setText(warning);});
         }
     }
 
@@ -309,11 +369,9 @@ public class ClientHandler {
         JSONObject JSONplayer;
         JSONParser parser = new JSONParser();
         JSONArray list = (JSONArray) response.get("list");
-
         nameList = FXCollections.observableArrayList();
         statusList = FXCollections.observableArrayList();
         scoreList = FXCollections.observableArrayList();
-
         for (int i = 0; i < list.size(); i++) {
             try {
                 JSONplayer = (JSONObject) parser.parse(list.get(i).toString());
@@ -327,12 +385,17 @@ public class ClientHandler {
         switch (currentScene) {
             case "Dashboard":
                 Platform.runLater(() -> {
-                    dashBoard.updateTable(nameList, scoreList, statusList);
+                    dashboard.updateTable(nameList, scoreList, statusList);
                 });
                 break;
             case "Multiple":
                 Platform.runLater(() -> {
-                    multigame.updateTable(nameList, scoreList, statusList);
+                    invite.updateTable(nameList, scoreList, statusList);
+                });
+                break;
+            case "LoadGame":
+                Platform.runLater(() -> {
+                    loadGame.updateTable(nameList, scoreList, statusList);
                 });
                 break;
             default:
@@ -346,25 +409,6 @@ public class ClientHandler {
         inviteRequest.put("username", invitedPlayerUsername);
         inviteRequest.put("newGame", true);
         ClientHandler.sendRequest(inviteRequest);
-    }
-
-    private static void invitePlayerResponse(JSONObject response) {
-        String resStatus = response.get("responseStatus").toString();
-
-        if (resStatus.equals("false")) {
-            if (currentScene.equals("Multiple")) {
-                gameAccepted = false;
-                Platform.runLater(() -> {
-                    multigame.getWaitingLbl().setText(player.getOpponent() + " is not available.");
-                    multigame.getOkBtn().setDisable(false);
-                });
-            }
-//            else if(currentScene.equals("Loadgame")){
-//                Platform.runLater(() -> {
-//                loadgamectrl.getRejectionLabel().setText("Player is not available.");
-//                loadgamectrl.requestRejectionHandler();});
-//            }
-        }
     }
 
     private static void getInvitationResponse(JSONObject response) {
@@ -390,31 +434,36 @@ public class ClientHandler {
             gameAccepted = true;
             if (replay) {
                 Platform.runLater(() -> {
-                    multigame.getWaitingLbl().setText(username + " accepted your invitation, Waiting for game to start.");
+                    multiGame.getWaitingLbl().setText(username + " accepted your invitation, Waiting for game to start.");
+                });
+            } else {
+                Platform.runLater(() -> {
+                    invite.getWaitingLbl().setText(username + " accepted your invitation, Waiting for game to start.");
                 });
             }
-//            else{
-//                Platform.runLater(() -> {Invitectrl.getWaitingLbl().setText(username + " accepted your invitation, Waiting for game to start.");});
-//            }                
         } else {
             gameAccepted = false;
             if (replay) {
                 Platform.runLater(() -> {
-                    multigame.getWaitingLbl().setText(username + " declined your invitation.");
-                    multigame.getOkBtn().setDisable(false);
+                    multiGame.getWaitingLbl().setText(username + " declined your invitation.");
+                    multiGame.getOkBtn().setDisable(false);
+                });
+            } else {
+                Platform.runLater(() -> {
+                    invite.getWaitingLbl().setText(username + " declined your invitation.");
+                    invite.getOkBtn().setDisable(false);
                 });
             }
-//            else{
-//                Platform.runLater(() -> {Invitectrl.getWaitingLbl().setText(username + " declined your invitation."); Invitectrl.getOkBtn().setDisable(false);});
-//            }
         }
     }
 
     private static void replayGameInviteHandler(String username, String inviteStatus) {
-//        if(inviteStatus.equals("false")){
-//            Platform.runLater(() -> { loadgamectrl.getRejectionLabel().setText("Player rejected your request");
-//            loadgamectrl.requestRejectionHandler();});
-//        }
+        if (inviteStatus.equals("false")) {
+            Platform.runLater(() -> {
+                loadGame.getwaitingLbl().setText("Player rejected your request");
+                loadGame.requestRejectionHandler();
+            });
+        }
         if (inviteStatus.equals("true")) {
             player.setOpponent(username);
         }
@@ -432,9 +481,9 @@ public class ClientHandler {
         Platform.runLater(() -> {
             if (newGame.equals("false")) {
                 String date = request.get("date").toString();
-                //invitationCtrl.getInvitationLabel().setText("Player "+username+" is inviting you to replay an old game.\n Date: ["+date+"]\n Do you accept?");
+                invitation.getInvitationLabel().setText("Player " + username + " is inviting you to replay an old game.\n Date: [" + date + "]\n Do you accept?");
             } else {
-                //invitationCtrl.getInvitationLabel().setText("Player "+username+" is inviting you to a new game.\n Do you accept?");
+                invitation.getInvitationLabel().setText("Player " + username + " is inviting you to a new game.\n Do you accept?");
             }
         });
     }
@@ -452,40 +501,41 @@ public class ClientHandler {
     private static void GameStartedResponse(JSONObject response) {
         String resStatus = response.get("responseStatus").toString();
         if (resStatus.equals("true")) {
-
             if (replay) {
                 if (player.getInvited()) {
                     try {
-                        //Platform.runLater(() -> {invitationCtrl.getWaitingLbl().setText("Game established, Start Playing!");
-                        //invitationCtrl.getStartBtn().setDisable(false);});
+                        Platform.runLater(() -> {
+                            invitation.getWaitingLbl().setText("Game established, Start Playing!");
+                            invitation.getStartBtn().setDisable(false);
+                        });
                         AppControl.moveTo("Multiple");
                     } catch (IOException ex) {
                         Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE, null, ex);
                     }
-
                 } else {
                     Platform.runLater(() -> {
-                        multigame.getWaitingLbl().setText("Game established, Start Playing!");
-                        multigame.getOkBtn().setDisable(false);
+                        multiGame.getWaitingLbl().setText("Game established, Start Playing!");
+                        multiGame.getOkBtn().setDisable(false);
                     });
                 }
             } else {
                 if (player.getInvited()) {
-                    //Platform.runLater(() -> {invitationCtrl.getWaitingLbl().setText("Game established, Start Playing!"); 
-                    //invitationCtrl.getStartBtn().setDisable(false);});
+                    Platform.runLater(() -> {
+                        invitation.getWaitingLbl().setText("Game established, Start Playing!");
+                        invitation.getStartBtn().setDisable(false);
+                    });
                 } else {
-                    //Platform.runLater(() -> {Invitectrl.getWaitingLbl().setText("Game established, Start Playing!"); 
-                    //Invitectrl.getOkBtn().setDisable(false);});
-
+                    Platform.runLater(() -> {
+                        invite.getWaitingLbl().setText("Game established, Start Playing!");
+                        invite.getOkBtn().setDisable(false);
+                    });
                 }
                 try {
                     AppControl.moveTo("Multiple");
                 } catch (IOException ex) {
                     Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE, null, ex);
                 }
-
             }
-        } else {
         }
     }
 
@@ -507,10 +557,9 @@ public class ClientHandler {
         if (resStatus.equals("true")) {
             gameAccepted = false;
             Platform.runLater(() -> {
-                multigame.getWaitingSubscene().setVisible(true);
-                multigame.getOkBtn().setDisable(false);
-
-                multigame.getWaitingLbl().setText("Client has dropped from the game");
+                multiGame.getWaitingSubscene().setVisible(true);
+                multiGame.getOkBtn().setDisable(false);
+                multiGame.getWaitingLbl().setText("Client has dropped from the game");
             });
         }
     }
@@ -523,13 +572,11 @@ public class ClientHandler {
         } else if (errormsg.equals("clientDropped")) {
             gameAccepted = false;
             Platform.runLater(() -> {
-                multigame.getWaitingSubscene().setVisible(true);
-                multigame.getWaitingLbl().setText("Client has dropped from the game");
+                multiGame.getWaitingSubscene().setVisible(true);
+                multiGame.getWaitingLbl().setText("Client has dropped from the game");
             });
         }
-
         isLoaded = false;
-
     }
 
     public static void sendMoveRequest(int row, int col) {
@@ -543,11 +590,11 @@ public class ClientHandler {
     private static void getMoveReponse(JSONObject response) {
         int row = Integer.parseInt(response.get("row").toString());
         int col = Integer.parseInt(response.get("col").toString());
-
-        GameHandler.BtnPosition move = new GameHandler.BtnPosition(row, col);
+        GameHandler.btnPosition move = new GameHandler.btnPosition(row, col);
         GameHandler.setMoveOfNextPlayer(move);
-
-        // Platform.runLater(()->{multigame.secondPlayerMove();});
+        Platform.runLater(() -> {
+            multiGame.secondPlayerMove();
+        });
     }
 
     public static void saveGameRequest(String nextMove) {
@@ -555,15 +602,19 @@ public class ClientHandler {
         saveGame.put("type", "saveGame");
         saveGame.put("nextMove", nextMove);
         ClientHandler.sendRequest(saveGame);
-        //Platform.runLater(() -> {multigame.getSavingSubscene().setVisible(true);});
+        Platform.runLater(() -> {
+            multiGame.getSavingSubscene().setVisible(true);
+        });
     }
 
     private static void saveGameResponse(JSONObject response) {
         String resStatus = response.get("responseStatus").toString();
         if (resStatus.equals("true")) {
-            //Platform.runLater(() -> {multigame.getSavingSubscene().setVisible(true);
-            //multigame.getSavingLbl().setText("Game saved successfully."); 
-            //multigame.getHomtBtn().setDisable(false);});
+            Platform.runLater(() -> {
+                multiGame.getSavingSubscene().setVisible(true);
+                multiGame.getSavingLbl().setText("Game saved successfully.");
+                multiGame.getHomtBtn().setDisable(false);
+            });
         }
     }
 
@@ -615,22 +666,24 @@ public class ClientHandler {
             }
         }
     }
-     private static void displayGamesList(JSONObject response){
-        
-        games = FXCollections.observableArrayList ();
+
+    private static void displayGamesList(JSONObject response) {
+
+        games = FXCollections.observableArrayList();
         JSONParser parser = new JSONParser();
-        gamesFullInfo =(JSONArray) response.get("gamesList");
+        gamesFullInfo = (JSONArray) response.get("gamesList");
         JSONObject game = new JSONObject();
-        
-        for (int i = 0 ; i < gamesFullInfo.size(); i++) {
-            
+
+        for (int i = 0; i < gamesFullInfo.size(); i++) {
+
             try {
-                game=(JSONObject) parser.parse(gamesFullInfo.get(i).toString());
-                games.add((i+1)+". ["+game.get("date").toString()+"] with "+game.get("player").toString());
+                game = (JSONObject) parser.parse(gamesFullInfo.get(i).toString());
+                games.add((i + 1) + ". [" + game.get("date").toString() + "] with " + game.get("player").toString());
             } catch (ParseException ex) {
             }
         }
-        //Platform.runLater(() -> {loadgamectrl.displayGames(games);});
+        Platform.runLater(() -> {
+            loadGame.displayGames(games);
+        });
     }
 }
-

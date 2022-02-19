@@ -4,7 +4,7 @@
  */
 package controllers;
 
-import actions.AppControl;
+import Actions.AppControl;
 import clientHandler.ClientHandler;
 import clientHandler.Player;
 import java.io.IOException;
@@ -38,7 +38,7 @@ public class SignUpController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         player = new Player();
-//        ClientHandler.setLoginCtrl(this); 
+//  ClientHandler.setLoginCtrl(this); 
     }
 
 //#============================================================================#
@@ -46,7 +46,7 @@ public class SignUpController implements Initializable {
 //#============================================================================#
     @FXML
     private void backClicked(ActionEvent event) throws IOException {
-        AppControl.moveTo("Login");
+        AppControl.moveTo("signup");
     }
 
     @FXML
@@ -67,7 +67,7 @@ public class SignUpController implements Initializable {
             player.setUsername(user);
             
             JSONObject signReq = new JSONObject();
-            signReq.put("type", "signup");
+            signReq.put("type", "signUp");
             signReq.put("username", username);
             signReq.put("password", password);
             ClientHandler.sendRequest(signReq);
@@ -75,10 +75,10 @@ public class SignUpController implements Initializable {
             
         }
     }
-  @FXML
-    private void poupUpClicked(ActionEvent event) throws IOException {
-        AppControl.createPopup("TestCustomPopups","popup");
-    }
+//  @FXML
+//    private void poupUpClicked(ActionEvent event) throws IOException {
+//        AppControl.createPopup("TestCustomPopups","popup");
+//    }
 
 }
 
