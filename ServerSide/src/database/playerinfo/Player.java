@@ -3,14 +3,8 @@
 //#============================================================================#
 package database.playerinfo;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -39,9 +33,7 @@ public class Player {
     private Long score;
     private String username;
     private String passwd;
-    private String email;
     private statusType status;
-    InputStream avatar;
 
     public Long getPid() {
         return pid;
@@ -59,16 +51,8 @@ public class Player {
         return passwd;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
     public statusType getStatus() {
         return status;
-    }
-
-    public InputStream getAvatar() {
-        return avatar;
     }
 
     public void setPid(Long _pid) {
@@ -87,62 +71,35 @@ public class Player {
         this.passwd = _passwd;
     }
 
-    public void setEmail(String _email) {
-        this.email = _email;
-    }
-
     public void setStatus(statusType _status) {
         this.status = _status;
     }
 
-    public void setAvatar(InputStream avatar) {
-        this.avatar = avatar;
-    }
-
-    public void setAvatar(File _avatar) {
-        try {
-            this.avatar = new FileInputStream(_avatar);
-        } catch (FileNotFoundException ex) {
-            System.out.println("Error Avatar  : " + ex.getMessage());
-            Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    public Player(Long score, String username, String passwd, String email, statusType status, FileInputStream avatar) {
+    public Player(Long score, String username, String passwd, statusType status) {
         this.score = score;
         this.username = username;
         this.passwd = passwd;
-        this.email = email;
         this.status = status;
-        this.avatar = avatar;
     }
 
-    public Player(String username, String passwd, String email) {
-        this.username = username;
-        this.passwd = passwd;
-        this.email = email;
-    }
 
     public Player(String username, String passwd) {
         this.username = username;
         this.passwd = passwd;
     }
 
-    public Player(Long pid, String username, String passwd, String email) {
+    public Player(Long pid, String username, String passwd) {
         this.pid = pid;
         this.username = username;
         this.passwd = passwd;
-        this.email = email;
     }
 
-    // public static methods 
-    // add 
     public static Player createPlayer(ResultSet _rs) {
         Player p;
         try {
-            p = new Player(_rs.getLong("pid"), _rs.getString("username"), _rs.getString("passwd"), _rs.getString("email"));
+            p = new Player(_rs.getLong("pid"),
+                    _rs.getString("username"), _rs.getString("passwd"));
             p.setStatus(Player.statusType.valueOf(_rs.getString("status")));
-            p.setAvatar((InputStream) null);
             p.setScore(_rs.getLong("score"));
 
         } catch (SQLException ex) {

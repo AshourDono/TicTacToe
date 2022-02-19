@@ -72,7 +72,7 @@ public abstract class JSONHandeling {
         jsonObj = addToJSONObject(jsonObj,"username", player.getUsername());
         jsonObj = addToJSONObject(jsonObj,"status", player.getStatus().toString());
         jsonObj = addToJSONObject(jsonObj,"score",  player.getScore());
-        jsonObj = addToJSONObject(jsonObj,"avatar", player.getAvatar());
+//        jsonObj = addToJSONObject(jsonObj,"avatar", player.getAvatar());
 
         return jsonObj;
     }

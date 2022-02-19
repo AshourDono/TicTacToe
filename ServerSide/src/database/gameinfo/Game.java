@@ -5,7 +5,6 @@ package database.gameinfo;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Vector;
 import database.playerinfo.PlayerModel;
 
 /**
