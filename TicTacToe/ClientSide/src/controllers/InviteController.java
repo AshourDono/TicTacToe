@@ -4,8 +4,9 @@
  */
 package controllers;
 
-import Actions.AppControl;
+
 import clientHandler.ClientHandler;
+import static clientHandler.ClientHandler.changeScene;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.collections.ObservableList;
@@ -46,7 +47,7 @@ public class InviteController implements Initializable {
     private AnchorPane waitingSubscene;
     boolean finish;
     @FXML
-    private ComboBox inviteBox;
+    private ComboBox <String> inviteBox;
     @FXML
     private Label userName;
     @FXML
@@ -95,11 +96,9 @@ public class InviteController implements Initializable {
     @FXML
     private void okBtnHandler(ActionEvent event) {
         if (ClientHandler.getGameAccepted()) {
-            try {
-                AppControl.moveTo("MultiplePlayer");
-            } catch (IOException ex) {
-                Logger.getLogger(InviteController.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            
+                changeScene("MultiplePlayer");
+            
         } else {
             waitingSubscene.setVisible(false);
         }
@@ -107,11 +106,9 @@ public class InviteController implements Initializable {
 
     @FXML
     private void backHandler(ActionEvent event) {
-        try {
-            AppControl.moveTo("Dashboard");
-        } catch (IOException ex) {
-            Logger.getLogger(InviteController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+       
+            changeScene("Dashboard");
+       
     }
 
     public void updateTable(ObservableList<String> name, ObservableList<String> score, ObservableList<String> status) {

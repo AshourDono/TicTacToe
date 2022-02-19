@@ -4,8 +4,9 @@
  */
 package controllers;
 
-import Actions.AppControl;
+
 import clientHandler.ClientHandler;
+import static clientHandler.ClientHandler.changeScene;
 import clientHandler.Player;
 import java.io.IOException;
 import java.net.URL;
@@ -37,8 +38,9 @@ public class SignUpController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        ClientHandler.setSignUpCtrl(this); 
         player = new Player();
-//  ClientHandler.setLoginCtrl(this); 
+        
     }
 
 //#============================================================================#
@@ -46,9 +48,12 @@ public class SignUpController implements Initializable {
 //#============================================================================#
     @FXML
     private void backClicked(ActionEvent event) throws IOException {
-        AppControl.moveTo("signup");
+        changeScene("Login");
     }
-
+      public Label getWarning()
+    {
+        return warningLabel;
+    }
     @FXML
     private void registerClicked(ActionEvent event) throws IOException {
         String user = username.getText();
@@ -67,11 +72,10 @@ public class SignUpController implements Initializable {
             player.setUsername(user);
             
             JSONObject signReq = new JSONObject();
-            signReq.put("type", "signUp");
-            signReq.put("username", username);
-            signReq.put("password", password);
+            signReq.put("type", "signup");
+            signReq.put("username", user);
+            signReq.put("password", pass);
             ClientHandler.sendRequest(signReq);
-            AppControl.moveTo("Welcome");
             
         }
     }

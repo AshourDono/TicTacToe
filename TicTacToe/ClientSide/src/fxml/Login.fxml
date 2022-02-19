@@ -52,7 +52,7 @@
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </padding>
             </Label>
-            <Button id="signupButton" fx:id="signupBtn" alignment="CENTER" mnemonicParsing="false" onAction="#signupButtonClicked" prefHeight="42.0" prefWidth="87.0" stylesheets="@../Styles/Styles.css" text="Signup" textFill="WHITE" />
+            <Button id="signupButton" fx:id="signupBtn" alignment="CENTER" mnemonicParsing="false" onMouseReleased="#signupButtonClicked" prefHeight="42.0" prefWidth="87.0" stylesheets="@../Styles/Styles.css" text="Signup" textFill="WHITE" />
          </children>
       </VBox>
    </center>

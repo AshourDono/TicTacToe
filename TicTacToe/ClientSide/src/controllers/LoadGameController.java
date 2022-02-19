@@ -5,8 +5,9 @@
  */
 package controllers;
 
-import Actions.AppControl;
+
 import clientHandler.ClientHandler;
+import static clientHandler.ClientHandler.changeScene;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -67,11 +68,9 @@ public class LoadGameController implements Initializable  {
 
     @FXML
     private void backHandler(ActionEvent event) {
-         try {
-             AppControl.moveTo("Dashboard");
-         } catch (IOException ex) {
-             Logger.getLogger(LoadGameController.class.getName()).log(Level.SEVERE, null, ex);
-         }
+        
+             changeScene("Dashboard");
+        
     }
     
     public void updateTable(ObservableList<String> name , ObservableList<String> score , ObservableList<String> status){
@@ -112,9 +111,10 @@ public class LoadGameController implements Initializable  {
     private void proceedHandler(ActionEvent event) {
         waitingSubscene.setVisible(false);
         okBtn.setDisable(true);
-       getwaitingLbl().setText("Please wait for opponent response.");
+        getwaitingLbl().setText("Please wait for opponent response.");
         loadingImage.setVisible(true);
         
     }
+  
 }
 

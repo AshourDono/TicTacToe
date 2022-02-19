@@ -4,7 +4,6 @@
  */
 package controllers;
 
-import Actions.AppControl;
 import clientHandler.Player;
 import java.io.IOException;
 import java.net.URL;
@@ -17,6 +16,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import clientHandler.ClientHandler;
+import static clientHandler.ClientHandler.changeScene;
 import javafx.scene.input.MouseEvent;
 import org.json.simple.JSONObject;
 
@@ -58,14 +58,14 @@ public class LoginController implements Initializable {
     }
 
     @FXML
-    private void signupButtonClicked(ActionEvent event) throws IOException {
-        AppControl.moveTo("SignUp");
+    private void signupButtonClicked(MouseEvent event)  {
+        changeScene("SignUp");
 
         
     }
 
     @FXML
-    private void loginButtonClicked(MouseEvent event) throws IOException  {
+    private void loginButtonClicked(MouseEvent event) {
         String user = username.getText();
         String pass = password.getText();
 

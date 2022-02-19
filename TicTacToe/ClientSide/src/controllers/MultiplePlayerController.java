@@ -4,8 +4,9 @@
  */
 package controllers;
 
-import Actions.AppControl;
+
 import clientHandler.ClientHandler;
+import static clientHandler.ClientHandler.changeScene;
 import clientHandler.GameHandler;
 import java.io.IOException;
 import java.net.URL;
@@ -239,10 +240,10 @@ public class MultiplePlayerController implements Initializable {
         }
     }
 
-    private void exitBtnHandler(ActionEvent event) {
-        Platform.exit();
-    }
-
+//    private void exitBtnHandler(ActionEvent event) {
+//        Platform.exit();
+//    }
+    @FXML
     private void backBtnHandler(ActionEvent event) {
         setSceneVisibility(false);
     }
@@ -258,11 +259,9 @@ public class MultiplePlayerController implements Initializable {
 
         ClientHandler.sendRequest(gameQuit);
 
-        try {
-            AppControl.moveTo("Dashboard");//should be the scene for starting a game
-        } catch (IOException ex) {
-            Logger.getLogger(MultiplePlayerController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
+            changeScene("Dashboard");//should be the scene for starting a game
+        
     }
 
     @FXML
@@ -529,20 +528,16 @@ public class MultiplePlayerController implements Initializable {
     private void exitHandler(ActionEvent event) {
         ClientHandler.getPlayer().updateStatus("online");
         ClientHandler.setReplay(false);
-        try {
-            AppControl.moveTo("Dashboard");
-        } catch (IOException ex) {
-            Logger.getLogger(MultiplePlayerController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+       
+           changeScene("Dashboard");
+        
     }
 
     @FXML
     private void homeBtnHandler(ActionEvent event) {
-        try {
-            AppControl.moveTo("Dashboard");
-        } catch (IOException ex) {
-            Logger.getLogger(MultiplePlayerController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
+            changeScene("Dashboard");
+        
     }
 
     @FXML
@@ -564,11 +559,9 @@ public class MultiplePlayerController implements Initializable {
             ClientHandler.setReplay(false);
             ClientHandler.setIsLoaded(false);
         } else {
-            try {
-                AppControl.moveTo("Dashboard");
-            } catch (IOException ex) {
-                Logger.getLogger(MultiplePlayerController.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            
+                changeScene("Dashboard");
+            
         }
     }
 

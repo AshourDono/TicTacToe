@@ -4,8 +4,9 @@
  */
 package controllers;
 
-import Actions.AppControl;
+
 import clientHandler.ClientHandler;
+import static clientHandler.ClientHandler.changeScene;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -13,8 +14,8 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.input.MouseEvent;
 import org.json.simple.JSONObject;
 
 /**
@@ -27,13 +28,19 @@ public class HomePageController implements Initializable {
     private Label userName;
     @FXML
     private Label userScore;
+     @FXML
+    private Button newbtn;
+    @FXML
+    private Button loadbtn;
+    @FXML
+    private Button exitbtn;
 
     /**
      * Initializes the controller class.
      */
     @FXML
     private void newBtnClicked(ActionEvent event) throws IOException {
-        AppControl.moveTo("Dashboard");
+        changeScene("Dashboard");
     }
 
     @FXML
@@ -41,7 +48,7 @@ public class HomePageController implements Initializable {
         JSONObject getGamesRequest = new JSONObject();
         getGamesRequest.put("type", "getGames");
         ClientHandler.sendRequest(getGamesRequest);
-        AppControl.moveTo("LoadGame");
+        changeScene("LoadGame");
     }
 
     @FXML

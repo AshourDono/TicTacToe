@@ -4,8 +4,9 @@
  */
 package controllers;
 
-import Actions.AppControl;
+
 import clientHandler.ClientHandler;
+import static clientHandler.ClientHandler.changeScene;
 import clientHandler.GameHandler;
 import java.io.IOException;
 import java.net.URL;
@@ -327,17 +328,17 @@ public class SinglePlayerController implements Initializable {
     @FXML
     private void backBtnHandler(ActionEvent event) throws IOException {
         setSceneVisibility(false);
-        AppControl.moveTo("Dashboard");
+        changeScene("Dashboard");
     }
 
     @FXML
     private void quitBtnHandler(ActionEvent event) throws IOException {
-        AppControl.moveTo("Dashboard");
+        changeScene("Dashboard");
     }
 
     @FXML
     private void exitClicked(ActionEvent event) throws IOException {
-        AppControl.moveTo("Dashboard");
+        changeScene("Dashboard");
     }
 
    
@@ -351,6 +352,7 @@ public class SinglePlayerController implements Initializable {
     
     @Override
         public void initialize(URL url, ResourceBundle rb) {
+        ClientHandler.setSingleModeCtrl(this);
         setSceneVisibility(false);
         player1.setText(ClientHandler.getPlayer().getUsername());
         player2.setText("Computer");

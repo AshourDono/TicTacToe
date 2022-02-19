@@ -4,7 +4,7 @@
  */
 package controllers;
 
-import Actions.AppControl;
+
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -15,6 +15,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import clientHandler.ClientHandler;
+import static clientHandler.ClientHandler.changeScene;
 public class WelcomeController implements Initializable {
 
     /**
@@ -31,7 +32,7 @@ public class WelcomeController implements Initializable {
         // StartPlaying button handler switch the scene to StartPane
         @FXML
         private void startBtnClicked(ActionEvent event) throws IOException {
-            AppControl.moveTo("HomePage");
+           changeScene("HomePage");
         }
 
         @Override

@@ -1,13 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package fxml;
-
 import clientHandler.ClientHandler;
-import Actions.AppControl;
-import java.io.IOException;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
 import javafx.fxml.FXMLLoader;
@@ -16,12 +8,8 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.json.simple.JSONObject;
 
-/**
- *
- * @author user
- */
 public class App extends Application {
-       
+    
     boolean connected = false;
     Thread readerThread;
     Parent root;
@@ -31,10 +19,7 @@ public class App extends Application {
     {
         connected = ClientHandler.connectToServer();
     }
-//        private static Parent loadFXML(String fxml) throws IOException {
-//        FXMLLoader fxmlLoader = new FXMLLoader(AppControl.class.getResource("/fxml/" + fxml + ".fxml"));
-//        return fxmlLoader.load();
-//    }
+    
     @Override
     public void start(Stage stage) throws Exception {
         if (connected){
@@ -74,7 +59,7 @@ public class App extends Application {
             readerThread.stop();
         }
     }
- 
+
     /**
      * @param args the command line arguments
      */

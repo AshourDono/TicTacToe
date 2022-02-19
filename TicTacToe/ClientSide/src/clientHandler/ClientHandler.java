@@ -1,3 +1,4 @@
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
@@ -17,7 +18,6 @@ import javafx.collections.ObservableList;
 import javafx.stage.Stage;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import Actions.AppControl;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Platform;
@@ -33,6 +33,9 @@ import controllers.InviteController;
 import clientHandler.GameHandler;
 import controllers.InvitationController;
 import controllers.LoadGameController;
+import controllers.SignUpController;
+import controllers.SinglePlayerController;
+import fxml.App;
 
 /**
  *
@@ -51,9 +54,10 @@ public class ClientHandler {
     private static DashboardController dashboard;
     private static LoadGameController loadGame;
     private static InviteController invite;
-//    private static PlayingModeFXMLController Playmodectrl;
+    private static SinglePlayerController singleMode;
     private static InvitationController invitation;
     private static MultiplePlayerController multiGame;
+    private static SignUpController signUpCtrl;
     private static ObservableList<String> nameList = FXCollections.observableArrayList();
     private static ObservableList<String> statusList = FXCollections.observableArrayList();
     private static ObservableList<String> scoreList = FXCollections.observableArrayList();
@@ -69,9 +73,14 @@ public class ClientHandler {
     private static boolean clientDropped = false;
     private static boolean isConnected;
 
-      public static void setLoginCtrl(LoginController ctrl) {
-        loginctrl=ctrl;
+    public static void setLoginCtrl(LoginController ctrl) {
+        loginctrl = ctrl;
     }
+    public static void setSignUpCtrl(SignUpController ctrl)
+    {
+        signUpCtrl=ctrl;
+    }
+
     public static void setDashboardCtrl(DashboardController ctrl) {
         dashboard = ctrl;
     }
@@ -87,9 +96,10 @@ public class ClientHandler {
     public static void setInviteCtrl(InviteController ctrl) {
         invite = ctrl;
     }
-//    public static void setPlaymodeCtrl(PlayingModeController ctrl){
-//       Playmodectrl=ctrl;
-//    }
+
+    public static void setSingleModeCtrl(SinglePlayerController ctrl) {
+        singleMode = ctrl;
+    }
 
     public static void setInvitationCtrl(InvitationController ctrl) {
         invitation = ctrl;
@@ -98,20 +108,23 @@ public class ClientHandler {
     public static void setMultigameCtrl(MultiplePlayerController ctrl) {
         multiGame = ctrl;
     }
- public static void setWindow(Stage stage) {
+
+    public static void setWindow(Stage stage) {
         window = stage;
     }
+
     public static Stage getWindow() {
         return window;
     }
-     @FXML
-    public static void changeScene(String newScene)
-    {   
+
+    @FXML
+    public static void changeScene(String newScene) {
         setCurrentScene(newScene);
-        Platform.runLater(() -> {   
+        Platform.runLater(() -> {
             try {
                 //err=> ClientHandler.class
-                Parent root = FXMLLoader.load(ClientHandler.class.getResource("./fxml"+newScene+".fxml"));
+
+                Parent root = FXMLLoader.load(App.class.getResource(newScene + ".fxml"));
                 Scene scene = new Scene(root);
                 window.setScene(scene);
                 window.setResizable(false);
@@ -121,7 +134,7 @@ public class ClientHandler {
             }
         });
     }
-    
+
     public static boolean connectToServer() {
         boolean result = true;
         try {
@@ -150,7 +163,7 @@ public class ClientHandler {
         try {
 //            connectToServer();
 //            System.out.println(ps);
-   
+
             ps.writeUTF(jsonMsg.toJSONString());
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -173,12 +186,8 @@ public class ClientHandler {
                     }
                 } catch (IOException ex) {
                     running = false;
-                    try {
-                        
-                        AppControl.moveTo("ConnProblem");
-                    } catch (IOException ex1) {
-                        Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE, null, ex1);
-                    }
+
+                    changeScene("ConnProblem");
                 }
             }
         }
@@ -200,6 +209,9 @@ public class ClientHandler {
                     break;
                 case "updateList":
                     updateList(jsonMsg);
+                    break;
+                case "invitePlayer":
+                    invitePlayerResponse(jsonMsg);
                     break;
                 case "invitation":
                     invitationRequest(jsonMsg);
@@ -309,26 +321,21 @@ public class ClientHandler {
         player.setScore(Integer.parseInt(response.get("score").toString()));
         player.setUsername(response.get("username").toString());
         player.setStatus(response.get("status").toString());
-        try {
-            AppControl.moveTo("Welcome");
-        } catch (IOException ex) {
-            Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        changeScene("Welcome");
+
     }
+    
+         
 
     private static void login(JSONObject response) {
         String request = response.get("type").toString();
         String resStatus = response.get("responseStatus").toString();
         if (resStatus.equals("true")) {
-//            getData(response);
-        player.setScore(Integer.parseInt(response.get("score").toString()));
-        player.setUsername(response.get("username").toString());
-        player.setStatus(response.get("status").toString());
-            try {
-                AppControl.moveTo("Welcome");
-            } catch (IOException ex) {
-                Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            player.setScore(Integer.parseInt(response.get("score").toString()));
+            player.setUsername(response.get("username").toString());
+            player.setStatus(response.get("status").toString());
+            changeScene("Welcome");
+
         } else {
             String error = response.get("errorMsg").toString();
             String warning;
@@ -339,8 +346,10 @@ public class ClientHandler {
             } else {
                 warning = "unexpected";
             }
-             Platform.runLater(() -> {loginctrl.getWarning().setText(warning);});
-            
+            Platform.runLater(() -> {
+                loginctrl.getWarning().setText(warning);
+            });
+
         }
     }
 
@@ -348,8 +357,12 @@ public class ClientHandler {
         String request = response.get("type").toString();
         String resStatus = response.get("responseStatus").toString();
         if (resStatus.equals("true")) {
-            getData(response);
-        } else {
+            //player.setScore(Integer.parseInt(response.get("score").toString()));
+//            player.setUsername(response.get("username").toString());
+//            player.setStatus(response.get("status").toString());
+            changeScene("Welcome");
+        }
+         else{
             String error = response.get("errorMsg").toString();
             String warning;
             if (request.equals("signup") && error.equals("fail")) {
@@ -357,7 +370,9 @@ public class ClientHandler {
             } else {
                 warning = "unexpected";
             }
-           Platform.runLater(() -> {loginctrl.getWarning().setText(warning);});
+            Platform.runLater(() -> {
+                signUpCtrl.getWarning().setText(warning);
+            });
         }
     }
 
@@ -388,7 +403,7 @@ public class ClientHandler {
                     dashboard.updateTable(nameList, scoreList, statusList);
                 });
                 break;
-            case "Multiple":
+            case "Invite":
                 Platform.runLater(() -> {
                     invite.updateTable(nameList, scoreList, statusList);
                 });
@@ -473,11 +488,9 @@ public class ClientHandler {
         String username = request.get("username").toString();
         String newGame = request.get("newGame").toString();
         invitingUsername = username;
-        try {
-            AppControl.moveTo("Invitation");
-        } catch (IOException ex) {
-            Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE, null, ex);
-        }
+
+        changeScene("Invitation");
+
         Platform.runLater(() -> {
             if (newGame.equals("false")) {
                 String date = request.get("date").toString();
@@ -503,15 +516,13 @@ public class ClientHandler {
         if (resStatus.equals("true")) {
             if (replay) {
                 if (player.getInvited()) {
-                    try {
-                        Platform.runLater(() -> {
-                            invitation.getWaitingLbl().setText("Game established, Start Playing!");
-                            invitation.getStartBtn().setDisable(false);
-                        });
-                        AppControl.moveTo("Multiple");
-                    } catch (IOException ex) {
-                        Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+
+                    Platform.runLater(() -> {
+                        invitation.getWaitingLbl().setText("Game established, Start Playing!");
+                        invitation.getStartBtn().setDisable(false);
+                    });
+                    changeScene("Invite");
+
                 } else {
                     Platform.runLater(() -> {
                         multiGame.getWaitingLbl().setText("Game established, Start Playing!");
@@ -530,11 +541,9 @@ public class ClientHandler {
                         invite.getOkBtn().setDisable(false);
                     });
                 }
-                try {
-                    AppControl.moveTo("Multiple");
-                } catch (IOException ex) {
-                    Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE, null, ex);
-                }
+
+                changeScene("Invite");
+
             }
         }
     }
@@ -649,19 +658,15 @@ public class ClientHandler {
             isLoaded = true;
             if (player.getInvited()) {
                 Platform.runLater(() -> {
-                    try {
-                        AppControl.moveTo("MultiPlayer");
-                    } catch (IOException ex) {
-                        Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+
+                    changeScene("MultiPlayer");
+
                 });
             } else {
                 Platform.runLater(() -> {
-                    try {
-                        AppControl.moveTo("MultiPlayer");
-                    } catch (IOException ex) {
-                        Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+
+                    changeScene("MultiPlayer");
+
                 });
             }
         }
@@ -686,4 +691,24 @@ public class ClientHandler {
             loadGame.displayGames(games);
         });
     }
+
+    private static void invitePlayerResponse(JSONObject response) {
+        String resStatus = response.get("responseStatus").toString();
+
+        if (resStatus.equals("false")) {
+            if (currentScene.equals("Multigame")) {
+                gameAccepted = false;
+                Platform.runLater(() -> {
+                    multiGame.getWaitingLbl().setText(player.getOpponent() + " is not available.");
+                    multiGame.getOkBtn().setDisable(false);
+                });
+            } else if (currentScene.equals("Loadgame")) {
+                Platform.runLater(() -> {
+                    loadGame.getwaitingLbl().setText("Player is not available.");
+                    loadGame.requestRejectionHandler();
+                });
+            }
+        }
+    }
+
 }
