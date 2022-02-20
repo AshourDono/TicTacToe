@@ -403,7 +403,7 @@ public class ClientHandler {
                     dashboard.updateTable(nameList, scoreList, statusList);
                 });
                 break;
-            case "Invite":
+            case "Multiple":
                 Platform.runLater(() -> {
                     invite.updateTable(nameList, scoreList, statusList);
                 });
@@ -521,7 +521,7 @@ public class ClientHandler {
                         invitation.getWaitingLbl().setText("Game established, Start Playing!");
                         invitation.getStartBtn().setDisable(false);
                     });
-                    changeScene("Invite");
+                    changeScene("multiple");
 
                 } else {
                     Platform.runLater(() -> {
@@ -542,7 +542,7 @@ public class ClientHandler {
                     });
                 }
 
-                changeScene("Invite");
+                changeScene("multiple");
 
             }
         }

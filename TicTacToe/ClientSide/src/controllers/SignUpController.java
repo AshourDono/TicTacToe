@@ -70,7 +70,7 @@ public class SignUpController implements Initializable {
             warningLabel.setText("");
 
             player.setUsername(user);
-            
+             ClientHandler.setPlayer(player);
             JSONObject signReq = new JSONObject();
             signReq.put("type", "signup");
             signReq.put("username", user);

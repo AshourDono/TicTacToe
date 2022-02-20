@@ -46,9 +46,13 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to ed
 }
 
 .root {
-     -fx-background-image: url("../images/img.jpg");
-     
-/*    -fx-background-size: cover;*/
+     -fx-background-image: url("../images/bgimg.jpg");
+         -fx-background-size: cover;
+/*    -fx-background-size: 800px;*/
+}
+.bgGame{
+    -fx-background-image: url("../image/bg1.jpg");
+        -fx-background-size: cover;
 }
 .controlBtn , .label{
    
@@ -80,10 +84,7 @@ background-image: linear-gradient(315deg, #7f53ac 0%, #647dee 74%);*/
  
 }
 
-.bgGame{
-    -fx-background-image: url("../image/bg1.jpg");
-        -fx-background-size: cover;
-}
+
 
 .invite{
     -fx-background-image: url("../image/DwItVP.png");

@@ -113,7 +113,7 @@ public class LoadGameController implements Initializable  {
         okBtn.setDisable(true);
         getwaitingLbl().setText("Please wait for opponent response.");
         loadingImage.setVisible(true);
-        
+       
     }
   
 }

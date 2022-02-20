@@ -8,9 +8,9 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane id="AnchorPane" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: white;" stylesheets="@../Styles/Styles.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.WelcomeController">
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: white;" styleClass="bgGame" stylesheets="@../Styles/Styles.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.WelcomeController">
     <children>
-      <ImageView fitHeight="650.0" fitWidth="850.0" pickOnBounds="true">
+      <ImageView fitHeight="618.0" fitWidth="806.0" layoutY="-7.0" pickOnBounds="true">
          <image>
             <Image url="@../images/bg1.jpg" />
          </image></ImageView>
@@ -19,16 +19,16 @@
             <Font name="Tw Cen MT Condensed Extra Bold" size="37.0" />
          </font>
       </Text>
-      <ImageView fx:id="WelcomeImg" fitHeight="265.0" fitWidth="351.0" layoutX="248.0" layoutY="195.0" pickOnBounds="true" preserveRatio="true" styleClass="..\Styles\Styles.css">
+      <ImageView fx:id="WelcomeImg" fitHeight="265.0" fitWidth="351.0" layoutX="254.0" layoutY="246.0" pickOnBounds="true" preserveRatio="true" styleClass="..\Styles\Styles.css">
          <image>
             <Image url="@../images/welcome.gif" />
          </image></ImageView>
-      <Label fx:id="username" alignment="CENTER" contentDisplay="CENTER" layoutX="102.0" layoutY="123.0" prefHeight="112.0" prefWidth="583.0" text="Username" textAlignment="CENTER" wrapText="true">
+      <Label fx:id="username" alignment="CENTER" contentDisplay="CENTER" layoutX="109.0" layoutY="118.0" prefHeight="125.0" prefWidth="586.0" stylesheets="@../Styles/Styles.css" text="Username" textAlignment="CENTER" wrapText="true">
          <font>
-            <Font name="Tw Cen MT Condensed Extra Bold" size="50.0" />
+            <Font size="58.0" />
          </font>
       </Label>
-      <Button fx:id="startBtn" layoutX="609.0" layoutY="460.0" mnemonicParsing="false" onAction="#startBtnClicked" prefHeight="38.0" prefWidth="168.0" style="-fx-background-color: #e354c2;" text="Start Playing !">
+      <Button fx:id="startBtn" layoutX="617.0" layoutY="503.0" mnemonicParsing="false" onAction="#startBtnClicked" prefHeight="38.0" prefWidth="168.0" style="-fx-background-color: #e354c2;" text="Start Playing !">
          <font>
             <Font name="Tw Cen MT Condensed Extra Bold" size="19.0" />
          </font>
